@@ -1,0 +1,56 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrok.AppHost", "Wrok.AppHost\Wrok.AppHost.csproj", "{07D71405-98A9-4CCC-8B6A-2A8D90E22631}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrok.ServiceDefaults", "Wrok.ServiceDefaults\Wrok.ServiceDefaults.csproj", "{7479A79D-8FB7-8903-454C-EBFC0EA1CCFE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wrok.Gateway", "Wrok.Gateway", "{5334EA01-89F7-4693-AA4D-6CD9C44223CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wrok.Auth", "Wrok.Auth", "{FB8A9BB1-E82D-49B8-AF7F-27110B117A03}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrok.Auth.Api", "src\Wrok.Auth\Wrok.Auth.Api\Wrok.Auth.Api.csproj", "{C0012229-CBD7-F8B0-0D15-1EFDFCFFB112}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07D71405-98A9-4CCC-8B6A-2A8D90E22631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07D71405-98A9-4CCC-8B6A-2A8D90E22631}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07D71405-98A9-4CCC-8B6A-2A8D90E22631}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07D71405-98A9-4CCC-8B6A-2A8D90E22631}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7479A79D-8FB7-8903-454C-EBFC0EA1CCFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7479A79D-8FB7-8903-454C-EBFC0EA1CCFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7479A79D-8FB7-8903-454C-EBFC0EA1CCFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7479A79D-8FB7-8903-454C-EBFC0EA1CCFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0012229-CBD7-F8B0-0D15-1EFDFCFFB112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0012229-CBD7-F8B0-0D15-1EFDFCFFB112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0012229-CBD7-F8B0-0D15-1EFDFCFFB112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0012229-CBD7-F8B0-0D15-1EFDFCFFB112}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5334EA01-89F7-4693-AA4D-6CD9C44223CE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{FB8A9BB1-E82D-49B8-AF7F-27110B117A03} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{C0012229-CBD7-F8B0-0D15-1EFDFCFFB112} = {FB8A9BB1-E82D-49B8-AF7F-27110B117A03}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DEB48F7B-0220-4D14-9FDA-CAFB558CD2A7}
+	EndGlobalSection
+EndGlobal
