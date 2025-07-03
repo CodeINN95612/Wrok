@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\src\Wrok.Auth\Wrok.Auth.Api\Wrok.Auth.Api.csproj" />
+    <ProjectReference Include="..\src\Wrok.Identity\Wrok.Identity.Api\Wrok.Identity.Api.csproj" />
   </ItemGroup>
 
 </Project>
