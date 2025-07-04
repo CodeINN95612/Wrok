@@ -10,4 +10,9 @@
     <ProjectReference Include="..\Wrok.Identity.Application\Wrok.Identity.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Configurations\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
