@@ -1,5 +1,7 @@
 @Wrok.Identity.Api_HostAddress = https://localhost:7010
 
+### AUTH
+
 POST {{Wrok.Identity.Api_HostAddress}}/auth/register/
 Accept: application/json
 Content-Type: application/json
@@ -12,4 +14,12 @@ Content-Type: application/json
 }
 
 
+### USERS
+
+GET {{Wrok.Identity.Api_HostAddress}}/users
+Accept: application/json
+
 ###
+
+GET {{Wrok.Identity.Api_HostAddress}}/users?role=projectManager
+Accept: application/json

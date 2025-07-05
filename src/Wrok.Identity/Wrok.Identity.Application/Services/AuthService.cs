@@ -1,7 +1,4 @@
-﻿
-using System.Reflection.Metadata.Ecma335;
-
-using ErrorOr;
+﻿using ErrorOr;
 
 using Wrok.Identity.Application.Abstractions.Common;
 using Wrok.Identity.Application.Abstractions.Repositories;
@@ -18,7 +15,7 @@ internal sealed class AuthService(
     IPasswordHasher passwordHasher)
     : IAuthService
 {
-    public async Task<ErrorOr<UserId>> RegisterUser(RegisterUserDto registerDto)
+    public async Task<ErrorOr<UserId>> RegisterUserAsync(RegisterUserDto registerDto, CancellationToken ct)
     {
 
         var errors = ValidateDto(registerDto).ToList();
@@ -35,7 +32,7 @@ internal sealed class AuthService(
         tenant.AddAdminUser(superAdminUser);
 
         tenantRepository.Add(tenant);
-        await unitOfWork.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync(ct);
 
         return superAdminUser.Id;
     }

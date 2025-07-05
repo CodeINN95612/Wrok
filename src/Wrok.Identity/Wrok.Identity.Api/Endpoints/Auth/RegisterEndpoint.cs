@@ -10,13 +10,14 @@ public static class RegisterEndpoint
 
     public static void MapRegisterEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/auth/register", async (RegisterRequest request, IAuthService authService) =>
+        app.MapPost("/auth/register", async (RegisterRequest request, IAuthService authService, CancellationToken ct) =>
         {
-            var result = await authService.RegisterUser(new RegisterUserDto(
+            var dto = new RegisterUserDto(
                 request.Email,
                 request.Password,
-                request.Email,
-                request.TenantName));
+                request.FullName,
+                request.TenantName);
+            var result = await authService.RegisterUserAsync(dto, ct);
             return result.Match(
                 userId => TypedResults.Created($"users/{userId.Value}"),
                 errors => CustomResults.ProblemFromErrors(errors));

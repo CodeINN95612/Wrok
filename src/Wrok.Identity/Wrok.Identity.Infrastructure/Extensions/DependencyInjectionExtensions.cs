@@ -16,6 +16,7 @@ public static class DependencyInjectionExtensions
         services.AddWrokDb(configuration);
 
         services.AddScoped<ITenantRepository, TenantRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

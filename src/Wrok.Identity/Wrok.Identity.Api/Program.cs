@@ -1,4 +1,5 @@
 using Wrok.Identity.Api.Endpoints.Auth;
+using Wrok.Identity.Api.Endpoints.Users;
 using Wrok.Identity.Application.Extensions;
 using Wrok.Identity.Infrastructure.Extensions;
 
@@ -9,7 +10,7 @@ builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
 
-//builder.Services.AddProblemDetails();
+builder.Services.AddProblemDetails();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -27,5 +28,6 @@ app.UseHttpsRedirection();
 
 app.MapDefaultEndpoints();
 app.MapRegisterEndpoint();
+app.MapGetAllUsersEndpoint();
 
 app.Run();  
