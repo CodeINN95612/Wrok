@@ -36,7 +36,7 @@ public sealed class Tenant
 
     public void AddAdminUser(AdminUser adminUser)
     {
-        adminUser.JoinTenant(Id);
+        adminUser.JoinTenant(this);
         if (!_adminUsers.Any(u => u.IsSuper) && !adminUser.IsSuper)
         {
             throw new InvalidOperationException("At least one super admin user must be added to the tenant.");
@@ -50,7 +50,7 @@ public sealed class Tenant
 
     public void AddProjectManagerUser(ProjectManagerUser projectManagerUser)
     {
-        projectManagerUser.JoinTenant(Id);
+        projectManagerUser.JoinTenant(this);
         _projectManagerUsers.Add(projectManagerUser);
     }
 

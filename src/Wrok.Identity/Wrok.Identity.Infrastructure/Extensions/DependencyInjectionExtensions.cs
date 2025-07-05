@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Abstractions.UnitOfWork;
@@ -14,12 +13,27 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<WrokIdentityDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("work-identity-db")));
+        services.AddWrokDb(configuration);
 
         services.AddScoped<ITenantRepository, TenantRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddWrokDb(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<WrokIdentityDbContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("wrok-identity-db")));
+
+        //Apply migrations if needed
+        using (var serviceProvider = services.BuildServiceProvider())
+        {
+            using var scope = serviceProvider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<WrokIdentityDbContext>();
+            dbContext.Database.Migrate();
+        }
 
         return services;
     }

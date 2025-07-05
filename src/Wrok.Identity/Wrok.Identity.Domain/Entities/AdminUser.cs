@@ -7,6 +7,8 @@ public sealed class AdminUser : User
     public DateTime JoinedTenantAt { get; private set; }
     public bool IsSuper { get; private set; } //TODO: Using this boolean might not follow DDD, more investigation needed
 
+    public Tenant Tenant { get; private set; }
+
 #nullable disable
     private AdminUser() { } // For EF Core
 #nullable enable
@@ -16,15 +18,17 @@ public sealed class AdminUser : User
     {
         TenantId = new TenantId(Guid.Empty);
         IsSuper = isSuper;
+        Tenant = null!;
     }
 
-    internal void JoinTenant(TenantId tenantId)
+    internal void JoinTenant(Tenant tenant)
     {
-        if (tenantId.Value == Guid.Empty)
+        if (tenant.Id.Value == Guid.Empty)
         {
-            throw new ArgumentException("Tenant ID cannot be empty.", nameof(tenantId));
+            throw new ArgumentException("Tenant ID cannot be empty.", nameof(tenant.Id));
         }
-        TenantId = tenantId;
+        TenantId = tenant.Id;
+        Tenant = tenant;
         JoinedTenantAt = DateTime.UtcNow;
     }
 }

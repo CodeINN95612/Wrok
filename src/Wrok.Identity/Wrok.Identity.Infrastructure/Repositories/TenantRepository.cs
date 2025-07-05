@@ -21,7 +21,10 @@ internal sealed class TenantRepository(WrokIdentityDbContext db) : ITenantReposi
 
     public async Task<Tenant?> GetByIdAsync(TenantId tenantId, CancellationToken ct = default)
     {
-        return await db.Tenants.FirstOrDefaultAsync(t => t.Id == tenantId, ct);
+        return await db.Tenants
+            .Include(t => t.AdminUsers)
+            .Include(t => t.ProjectManagerUsers)
+            .FirstOrDefaultAsync(t => t.Id == tenantId, ct);
     }
 
     public void Update(Tenant tenant)

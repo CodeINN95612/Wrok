@@ -6,6 +6,8 @@ public sealed class ProjectManagerUser : User
     public TenantId TenantId { get; private set; }
     public DateTime JoinedTenantAt { get; private set; }
 
+    public Tenant Tenant { get; private set; }
+
 #nullable disable
     // For EF Core
     private ProjectManagerUser() { }
@@ -15,15 +17,17 @@ public sealed class ProjectManagerUser : User
         : base(email, fullName, passwordHash, salt, UserRole.ProjectManager)
     {
         TenantId = new TenantId(Guid.Empty);
+        Tenant = null!;
     }
 
-    internal void JoinTenant(TenantId tenantId)
+    internal void JoinTenant(Tenant tenant)
     {
-        if (tenantId.Value == Guid.Empty)
+        if (tenant.Id.Value == Guid.Empty)
         {
-            throw new ArgumentException("Tenant ID cannot be empty.", nameof(tenantId));
+            throw new ArgumentException("Tenant ID cannot be empty.", nameof(tenant.Id));
         }
-        TenantId = tenantId;
+        TenantId = tenant.Id;
+        Tenant = tenant;
         JoinedTenantAt = DateTime.UtcNow;
     }
 }
