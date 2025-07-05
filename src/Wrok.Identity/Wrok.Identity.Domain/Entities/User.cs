@@ -10,6 +10,7 @@ public abstract class User
     public string Email { get; private set; }
     public string FullName { get; private set; }
     public string PasswordHash { get; private set; }
+    public string Salt { get; private set; }
     public UserRole Role { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
@@ -17,7 +18,7 @@ public abstract class User
     protected User() { } // For EF Core
 #nullable enable
 
-    protected User(string email, string fullName, string passwordHash, UserRole role)
+    protected User(string email, string fullName, string passwordHash, string salt, UserRole role)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(email, nameof(email));
         ArgumentException.ThrowIfNullOrWhiteSpace(fullName, nameof(fullName));
@@ -25,8 +26,9 @@ public abstract class User
         Email = email;
         FullName = fullName;
         PasswordHash = passwordHash;
-        CreatedAt = DateTime.UtcNow;
+        Salt = salt;
         Role = role;
+        CreatedAt = DateTime.UtcNow;
     }
 
     public void UpdateEmail(string email)

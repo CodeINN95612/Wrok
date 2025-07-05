@@ -10,8 +10,8 @@ public sealed class FreelancerUser : User
     private FreelancerUser() { } // For EF Core
 #nullable enable
 
-    public FreelancerUser(string email, string fullName, string passwordHash, string title, string bio)
-        : base(email, fullName, passwordHash, UserRole.Freelancer)
+    public FreelancerUser(string email, string fullName, string passwordHash, string salt, string title, string bio)
+        : base(email, fullName, passwordHash, salt, UserRole.Freelancer)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(title, nameof(title));
         ArgumentException.ThrowIfNullOrWhiteSpace(bio, nameof(bio));

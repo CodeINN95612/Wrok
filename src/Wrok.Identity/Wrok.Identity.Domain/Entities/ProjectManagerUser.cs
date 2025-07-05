@@ -11,10 +11,18 @@ public sealed class ProjectManagerUser : User
     private ProjectManagerUser() { }
 #nullable enable
 
-    public ProjectManagerUser(string email, string fullName, string passwordHash, TenantId tenantId)
-        : base(email, fullName, passwordHash, UserRole.ProjectManager)
+    public ProjectManagerUser(string email, string fullName, string passwordHash, string salt)
+        : base(email, fullName, passwordHash, salt, UserRole.ProjectManager)
     {
-        ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
+        TenantId = new TenantId(Guid.Empty);
+    }
+
+    internal void JoinTenant(TenantId tenantId)
+    {
+        if (tenantId.Value == Guid.Empty)
+        {
+            throw new ArgumentException("Tenant ID cannot be empty.", nameof(tenantId));
+        }
         TenantId = tenantId;
         JoinedTenantAt = DateTime.UtcNow;
     }

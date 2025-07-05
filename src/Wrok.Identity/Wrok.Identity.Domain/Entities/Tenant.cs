@@ -6,7 +6,6 @@ public sealed class Tenant
 {
     public TenantId Id { get; private set; }
     public string Name { get; private set; }
-    public string Domain { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     private readonly List<AdminUser> _adminUsers;
@@ -19,14 +18,12 @@ public sealed class Tenant
     private Tenant() { } // For EF Core
 #nullable enable
 
-    public Tenant(string name, string domain)
+    public Tenant(string name)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
-        ArgumentException.ThrowIfNullOrWhiteSpace(domain, nameof(domain));
 
         Id = new TenantId(Guid.CreateVersion7());
         Name = name;
-        Domain = domain;
         CreatedAt = DateTime.UtcNow;
         _adminUsers = [];
         _projectManagerUsers = [];
@@ -36,19 +33,11 @@ public sealed class Tenant
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
         Name = name;
     }
-    public void UpdateDomain(string domain)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(domain, nameof(domain));
-        Domain = domain;
-    }
 
     public void AddAdminUser(AdminUser adminUser)
     {
-        if (adminUser.TenantId != Id)
-        {
-            throw new InvalidOperationException("Admin user does not belong to this tenant.");
-        }
-        if(!_adminUsers.Any(u => u.IsSuper) && !adminUser.IsSuper)
+        adminUser.JoinTenant(Id);
+        if (!_adminUsers.Any(u => u.IsSuper) && !adminUser.IsSuper)
         {
             throw new InvalidOperationException("At least one super admin user must be added to the tenant.");
         }
@@ -61,10 +50,7 @@ public sealed class Tenant
 
     public void AddProjectManagerUser(ProjectManagerUser projectManagerUser)
     {
-        if (projectManagerUser.TenantId != Id)
-        {
-            throw new InvalidOperationException("Project manager user does not belong to this tenant.");
-        }
+        projectManagerUser.JoinTenant(Id);
         _projectManagerUsers.Add(projectManagerUser);
     }
 
