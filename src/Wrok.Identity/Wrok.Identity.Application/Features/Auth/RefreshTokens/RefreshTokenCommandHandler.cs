@@ -49,7 +49,7 @@ internal sealed class RefreshTokenCommandHandler(
         var newJwt = jwtGenerator.Generate(user);
         var newToken = refreshTokenGenerator.Generate();
 
-        user.SetRefreshToken(newToken, DateTime.UtcNow.AddDays(5));
+        user.UpdateRefreshToken(newToken, DateTime.UtcNow.AddDays(5));
 
         userRepository.Update(user);
 

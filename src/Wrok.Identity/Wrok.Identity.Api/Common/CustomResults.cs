@@ -10,19 +10,14 @@ internal static class CustomResults
     {
         if (errors.Any(e => e.Type != ErrorType.Validation))
         {
-            // For non-validation errors, return a 500 Internal Server Error Problem Details
-            // It will contain all errores as metadata
+            // For non-validation errors, return the first error
+            var error = errors.First(e => e.Type != ErrorType.Validation);
             var problemDetails = new ProblemDetails
             {
-                Status = StatusCodes.Status500InternalServerError,
-                Title = "An unexpected error occurred.",
-                Detail = "Please try again later."
+                Status = GetStatusCode(error.Type),
+                Title = error.Code,
+                Detail = error.Description,
             };
-            problemDetails.Extensions.Add("errors", errors.Select(s => new
-            {
-                Code = s.Code,
-                Description = s.Description
-            }));
             return TypedResults.Problem(problemDetails);
         }
 
@@ -40,5 +35,16 @@ internal static class CustomResults
         }));
 
         return TypedResults.Problem(validationProblemDetails);
+    }
+
+    private static int GetStatusCode(ErrorType type)
+    {
+        return type switch
+        {
+            ErrorType.Validation => StatusCodes.Status400BadRequest,
+            ErrorType.NotFound => StatusCodes.Status404NotFound,
+            ErrorType.Conflict => StatusCodes.Status409Conflict,
+            _ => StatusCodes.Status500InternalServerError
+        };
     }
 }

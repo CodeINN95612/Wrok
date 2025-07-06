@@ -51,7 +51,7 @@ public abstract class User
         PasswordHash = passwordHash;
     }
 
-    public void SetRefreshToken(string token, DateTime expiration)
+    public void UpdateRefreshToken(string token, DateTime expiration)
     {
         if (RefreshToken is null)
         {

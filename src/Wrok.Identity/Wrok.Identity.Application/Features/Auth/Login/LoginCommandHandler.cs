@@ -45,7 +45,7 @@ public sealed class LoginCommandHandler(
         var jwt = jwtGenerator.Generate(user);
         var refreshToken = refreshTokenGenerator.Generate();
 
-        user.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(5));
+        user.UpdateRefreshToken(refreshToken, DateTime.UtcNow.AddDays(5));
         userRepository.Update(user);
 
         await unitOfWork.SaveChangesAsync(ct);

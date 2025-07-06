@@ -41,6 +41,7 @@ public sealed class RefreshToken
         {
             throw new ArgumentException("Expiration must be in the future.", nameof(expiration));
         }
+        RevokedAt = null;
         Token = token;
         Expiration = expiration;
     }
