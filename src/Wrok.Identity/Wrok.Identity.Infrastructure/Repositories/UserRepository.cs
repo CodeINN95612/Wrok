@@ -14,32 +14,42 @@ internal sealed class UserRepository(WrokIdentityDbContext db) : IUserRepository
         var adminUsers = await db.Users
             .OfType<AdminUser>()
             .Include(u => u.Tenant)
+            .Include(u => u.RefreshToken)
             .ToListAsync(ct);
 
         var projectManagerUsers = await db.Users
             .OfType<ProjectManagerUser>()
             .Include(u => u.Tenant)
+            .Include(u => u.RefreshToken)
             .ToListAsync(ct);
 
         var freelanceUsers = await db.Users
             .OfType<FreelancerUser>()
             .ToListAsync(ct);
 
-        return [..adminUsers, ..projectManagerUsers, ..freelanceUsers];
+        return [.. adminUsers, .. projectManagerUsers, .. freelanceUsers];
     }
 
     public async Task<List<User>> GetAllByRoleAsync(UserRole role, CancellationToken ct)
     {
         if (role == UserRole.Admin)
         {
-            var users = await db.Users.OfType<AdminUser>().Include(u => u.Tenant).ToListAsync(ct);
-            return [..users];
+            var users = await db.Users
+                .OfType<AdminUser>()
+                .Include(u => u.Tenant)
+                .Include(u => u.RefreshToken)
+                .ToListAsync(ct);
+            return [.. users];
         }
 
         if (role == UserRole.ProjectManager)
         {
-            var users = await db.Users.OfType<ProjectManagerUser>().Include(u => u.Tenant).ToListAsync(ct);
-            return [..users];
+            var users = await db.Users
+                .OfType<ProjectManagerUser>()
+                .Include(u => u.Tenant)
+                .Include(u => u.RefreshToken)
+                .ToListAsync(ct);
+            return [.. users];
         }
 
         return await db.Users.Where(u => u.Role == role).ToListAsync(ct);
@@ -47,7 +57,9 @@ internal sealed class UserRepository(WrokIdentityDbContext db) : IUserRepository
 
     public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
     {
-        var user = await db.Users.FirstOrDefaultAsync(u => u.Email == email, ct);
+        var user = await db.Users
+            .Include(u => u.RefreshToken)
+            .FirstOrDefaultAsync(u => u.Email == email, ct);
 
         if (user is null)
         {
@@ -67,5 +79,10 @@ internal sealed class UserRepository(WrokIdentityDbContext db) : IUserRepository
         }
 
         return user;
+    }
+
+    public void Update(User user)
+    {
+        db.Update(user);
     }
 }

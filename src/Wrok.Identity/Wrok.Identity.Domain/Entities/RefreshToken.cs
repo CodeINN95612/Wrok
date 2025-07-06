@@ -11,14 +11,17 @@ public sealed class RefreshToken
     public DateTime CreatedAt { get; private set; }
     public DateTime? RevokedAt { get; private set; }
 
+    public User User { get; private set; }
+
 #nullable disable
     private RefreshToken() { } //For EF Core
 #nullable enable
 
-    public RefreshToken(RefreshTokenId id, UserId userId, string token, DateTime expiration)
+    internal RefreshToken(User user, string token, DateTime expiration)
     {
-        Id = id;
-        UserId = userId;
+        Id = new(Guid.CreateVersion7());
+        UserId = user.Id;
+        User = user;
         Token = token;
         Expiration = expiration;
         CreatedAt = DateTime.UtcNow;
@@ -30,5 +33,16 @@ public sealed class RefreshToken
     }
     public bool IsRevoked => RevokedAt.HasValue;
     public bool IsExpired => DateTime.UtcNow >= Expiration;
+
+    public void UpdateToken(string token, DateTime expiration)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(token, nameof(token));
+        if (expiration <= DateTime.UtcNow)
+        {
+            throw new ArgumentException("Expiration must be in the future.", nameof(expiration));
+        }
+        Token = token;
+        Expiration = expiration;
+    }
 
 }

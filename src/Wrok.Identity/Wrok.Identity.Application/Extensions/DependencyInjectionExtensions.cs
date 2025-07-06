@@ -26,6 +26,7 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IRegexValidator, RegexValidator>();
         services.AddScoped<IJwtGenerator, JwtGenerator>();
+        services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
 
         services.AddSettings(configuration);
 

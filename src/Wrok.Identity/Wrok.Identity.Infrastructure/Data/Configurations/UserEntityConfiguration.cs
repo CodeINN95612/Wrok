@@ -52,6 +52,9 @@ internal sealed class UserEntityConfiguration : IEntityTypeConfiguration<User>
             .HasValue<ProjectManagerUser>(UserRole.ProjectManager)
             .HasValue<FreelancerUser>(UserRole.Freelancer);
 
-        builder.ToTable("Users");
+        builder.HasOne(u => u.RefreshToken)
+            .WithOne()
+            .HasForeignKey<RefreshToken>(rt => rt.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

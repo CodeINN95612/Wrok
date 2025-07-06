@@ -7,6 +7,7 @@ using MediatR;
 
 using Wrok.Identity.Application.Abstractions.Common;
 using Wrok.Identity.Application.Abstractions.Repositories;
+using Wrok.Identity.Application.Abstractions.UnitOfWork;
 
 namespace Wrok.Identity.Application.Features.Auth.Login;
 
@@ -14,7 +15,9 @@ public sealed class LoginCommandHandler(
     IValidator<LoginRequest> validator,
     IPasswordHasher passwordHasher,
     IUserRepository userRepository,
-    IJwtGenerator jwtGenerator) : IRequestHandler<LoginRequest, ErrorOr<LoginResponse>>
+    IUnitOfWork unitOfWork,
+    IJwtGenerator jwtGenerator,
+    IRefreshTokenGenerator refreshTokenGenerator) : IRequestHandler<LoginRequest, ErrorOr<LoginResponse>>
 {
     public async Task<ErrorOr<LoginResponse>> Handle(LoginRequest request, CancellationToken ct)
     {
@@ -40,14 +43,18 @@ public sealed class LoginCommandHandler(
         }
 
         var jwt = jwtGenerator.Generate(user);
+        var refreshToken = refreshTokenGenerator.Generate();
 
-        //TODO: Implement refresh token logic
+        user.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(5));
+        userRepository.Update(user);
+
+        await unitOfWork.SaveChangesAsync(ct);
 
         return new LoginResponse(
             user.Email,
             user.FullName,
             user.Role.ToString(),
             jwt,
-            "not-implemented");
+            refreshToken);
     }
 }

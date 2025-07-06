@@ -14,6 +14,8 @@ public abstract class User
     public UserRole Role { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
+    public RefreshToken? RefreshToken { get; private set; }
+
 #nullable disable
     protected User() { } // For EF Core
 #nullable enable
@@ -47,5 +49,18 @@ public abstract class User
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(passwordHash, nameof(passwordHash));
         PasswordHash = passwordHash;
+    }
+
+    public void SetRefreshToken(string token, DateTime expiration)
+    {
+        if (RefreshToken is null)
+        {
+            RefreshToken = new RefreshToken(
+                this,
+                token,
+                expiration);
+        }
+
+        RefreshToken.UpdateToken(token, expiration);
     }
 }

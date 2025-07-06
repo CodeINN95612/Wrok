@@ -11,6 +11,7 @@ internal sealed class WrokIdentityDbContext(DbContextOptions<WrokIdentityDbConte
     public DbSet<AdminUser> AdminUsers { get; set; } = default!;
     public DbSet<FreelancerUser> FreelanceUsers { get; set; } = default!;
     public DbSet<ProjectManagerUser> ProjectManagerUsers { get; set; } = default!;
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,5 +22,6 @@ internal sealed class WrokIdentityDbContext(DbContextOptions<WrokIdentityDbConte
         modelBuilder.ApplyConfiguration(new AdminUserEntityConfiguration());
         modelBuilder.ApplyConfiguration(new FreelancerUserEntityConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectManagerUserEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new RefreshTokenEntityConfiguration());
     }
 }
