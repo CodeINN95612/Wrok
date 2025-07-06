@@ -28,6 +28,8 @@ internal sealed class UserEntityConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Email)
             .IsRequired();
+        builder.HasIndex(u => u.Email)
+            .IsUnique();
 
         builder.Property(u => u.FullName)
             .IsRequired();

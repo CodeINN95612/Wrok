@@ -12,7 +12,7 @@ using Wrok.Identity.Infrastructure.Data;
 namespace Wrok.Identity.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(WrokIdentityDbContext))]
-    [Migration("20250705145210_Initial")]
+    [Migration("20250706031805_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -71,6 +71,9 @@ namespace Wrok.Identity.Infrastructure.Data.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users", (string)null);
 

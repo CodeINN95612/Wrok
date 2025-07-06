@@ -4,13 +4,8 @@ using Wrok.Identity.Domain.Entities;
 using Wrok.Identity.Infrastructure.Data.Configurations;
 
 namespace Wrok.Identity.Infrastructure.Data;
-internal sealed class WrokIdentityDbContext : DbContext
+internal sealed class WrokIdentityDbContext(DbContextOptions<WrokIdentityDbContext> options) : DbContext(options)
 {
-    public WrokIdentityDbContext(DbContextOptions<WrokIdentityDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Tenant> Tenants { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<AdminUser> AdminUsers { get; set; } = default!;

@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 builder.Services
     .AddInfrastructure(builder.Configuration)
-    .AddApplication();
+    .AddApplication(builder.Configuration);
 
 builder.Services.AddProblemDetails();
 
@@ -28,6 +28,7 @@ app.UseHttpsRedirection();
 
 app.MapDefaultEndpoints();
 app.MapRegisterEndpoint();
+app.MapLoginEndpoint();
 app.MapGetAllUsersEndpoint();
 
 app.Run();  

@@ -69,6 +69,9 @@ namespace Wrok.Identity.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Users", (string)null);
 
                     b.HasDiscriminator<string>("Role");

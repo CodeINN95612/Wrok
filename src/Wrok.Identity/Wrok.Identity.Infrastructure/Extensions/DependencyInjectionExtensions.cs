@@ -29,8 +29,9 @@ public static class DependencyInjectionExtensions
             options.UseNpgsql(configuration.GetConnectionString("wrok-identity-db")));
 
         //Apply migrations if needed
-        using (var serviceProvider = services.BuildServiceProvider())
+        if (!EF.IsDesignTime)
         {
+            using var serviceProvider = services.BuildServiceProvider();
             using var scope = serviceProvider.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<WrokIdentityDbContext>();
             dbContext.Database.Migrate();

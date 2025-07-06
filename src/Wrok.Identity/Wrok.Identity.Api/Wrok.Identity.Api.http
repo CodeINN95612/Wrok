@@ -9,8 +9,19 @@ Content-Type: application/json
 {
   "email":"test@test.com",
   "password":"Test1234*",
-  "fullname":"test",
-  "tenantName":"tes"
+  "fullname":"Test",
+  "tenantName":"TestTenant"
+}
+
+###
+
+POST {{Wrok.Identity.Api_HostAddress}}/auth/login/
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email":"test@test.com",
+  "password":"Test1234*"
 }
 
 
