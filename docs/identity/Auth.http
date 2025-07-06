@@ -1,7 +1,6 @@
 @Wrok.Identity.Api_HostAddress = https://localhost:7010
 
-### AUTH
-
+### Register
 POST {{Wrok.Identity.Api_HostAddress}}/auth/register/
 Accept: application/json
 Content-Type: application/json
@@ -13,8 +12,7 @@ Content-Type: application/json
   "tenantName":"TestTenant"
 }
 
-###
-
+### Login
 POST {{Wrok.Identity.Api_HostAddress}}/auth/login/
 Accept: application/json
 Content-Type: application/json
@@ -24,13 +22,11 @@ Content-Type: application/json
   "password":"Test1234*"
 }
 
-
-### USERS
-
-GET {{Wrok.Identity.Api_HostAddress}}/users
+### Refresh Token
+POST {{Wrok.Identity.Api_HostAddress}}/auth/refresh-token/
 Accept: application/json
+Content-Type: application/json
 
-###
-
-GET {{Wrok.Identity.Api_HostAddress}}/users?role=projectManager
-Accept: application/json
+{
+  "token":"tv2Dzgcd73Fdm5yOwkIfgfgTRLdnG6xM0GYRBaSv7Oo="
+}

@@ -32,9 +32,9 @@ public sealed class RefreshToken
         RevokedAt = DateTime.UtcNow;
     }
     public bool IsRevoked => RevokedAt.HasValue;
-    public bool IsExpired => DateTime.UtcNow >= Expiration;
+    public bool IsExpired => DateTime.UtcNow > Expiration;
 
-    public void UpdateToken(string token, DateTime expiration)
+    internal void UpdateToken(string token, DateTime expiration)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(token, nameof(token));
         if (expiration <= DateTime.UtcNow)

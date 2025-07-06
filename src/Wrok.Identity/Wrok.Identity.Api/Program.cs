@@ -30,5 +30,6 @@ app.MapDefaultEndpoints();
 app.MapRegisterEndpoint();
 app.MapLoginEndpoint();
 app.MapGetAllUsersEndpoint();
+app.MapRefreshTokenEndpoint();
 
 app.Run();  

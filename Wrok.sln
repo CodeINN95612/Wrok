@@ -29,6 +29,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrok.Identity.Application",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrok.Identity.Infrastructure", "src\Wrok.Identity\Wrok.Identity.Infrastructure\Wrok.Identity.Infrastructure.csproj", "{98D65165-61E9-4723-BAB9-A8ADE1921108}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F3E736C6-0EE2-4B08-9DD1-2C26F5A42BFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "identity", "identity", "{9275DC0B-1910-4F13-9A0F-967C0C0A19D0}"
+	ProjectSection(SolutionItems) = preProject
+		docs\identity\Auth.http = docs\identity\Auth.http
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +77,7 @@ Global
 		{9CFE99E4-BD78-4798-9BFC-515546D8B212} = {746670C9-7EEB-40AA-B58C-B801F2219271}
 		{0B0E0FAE-C43F-4506-9828-D222F7D86335} = {746670C9-7EEB-40AA-B58C-B801F2219271}
 		{98D65165-61E9-4723-BAB9-A8ADE1921108} = {746670C9-7EEB-40AA-B58C-B801F2219271}
+		{9275DC0B-1910-4F13-9A0F-967C0C0A19D0} = {F3E736C6-0EE2-4B08-9DD1-2C26F5A42BFC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DEB48F7B-0220-4D14-9FDA-CAFB558CD2A7}

@@ -66,17 +66,23 @@ internal sealed class UserRepository(WrokIdentityDbContext db) : IUserRepository
             return null;
         }
 
-        if (user is AdminUser adminUser)
+        await LoadTenantAsync(user, ct);
+
+        return user;
+    }
+
+    public async Task<User?> GetByRefreshTokenAsync(string token, CancellationToken ct)
+    {
+        var user = await db.Users
+            .Include(u => u.RefreshToken)
+            .FirstOrDefaultAsync(u => u.RefreshToken != null && u.RefreshToken.Token == token, ct);
+
+        if (user is null)
         {
-            await db.Entry(adminUser).Reference(u => u.Tenant).LoadAsync(ct);
-            return adminUser;
+            return null;
         }
 
-        if (user is ProjectManagerUser projectManagerUser)
-        {
-            await db.Entry(projectManagerUser).Reference(u => u.Tenant).LoadAsync(ct);
-            return projectManagerUser;
-        }
+        await LoadTenantAsync(user, ct);
 
         return user;
     }
@@ -84,5 +90,21 @@ internal sealed class UserRepository(WrokIdentityDbContext db) : IUserRepository
     public void Update(User user)
     {
         db.Update(user);
+    }
+
+    private async Task LoadTenantAsync(User user, CancellationToken ct)
+    {
+        if (user is AdminUser adminUser)
+        {
+            await db.Entry(adminUser).Reference(u => u.Tenant).LoadAsync(ct);
+            return;
+        }
+        if (user is ProjectManagerUser projectManagerUser)
+        {
+            await db.Entry(projectManagerUser).Reference(u => u.Tenant).LoadAsync(ct);
+            return;
+        }
+        await Task.CompletedTask;
+        return;
     }
 }

@@ -9,9 +9,9 @@ public static class LoginEndpoint
 {
     public static void MapLoginEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/auth/login", async (LoginRequest request, ISender sender) =>
+        app.MapPost("/auth/login", async (LoginRequest request, ISender sender, CancellationToken ct) =>
         {
-            var result = await sender.Send(request);
+            var result = await sender.Send(request, ct);
             return result.Match(
                 success => TypedResults.Ok(success),
                 errors => CustomResults.ProblemFromErrors(errors));
