@@ -1,25 +1,19 @@
-﻿using Wrok.Identity.Api.Common;
-using Wrok.Identity.Application.Abstractions.Services;
-using Wrok.Identity.Application.Dtos.Auth;
+﻿using MediatR;
+
+using Wrok.Identity.Api.Common;
+using Wrok.Identity.Application.Features.Auth.Register;
 
 namespace Wrok.Identity.Api.Endpoints.Auth;
 
 public static class RegisterEndpoint
 {
-    public sealed record RegisterRequest(string Email, string Password, string FullName, string TenantName);
-
     public static void MapRegisterEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/auth/register", async (RegisterRequest request, IAuthService authService, CancellationToken ct) =>
+        app.MapPost("/auth/register", async (RegisterRequest request, ISender sender, CancellationToken ct) =>
         {
-            var dto = new RegisterUserDto(
-                request.Email,
-                request.Password,
-                request.FullName,
-                request.TenantName);
-            var result = await authService.RegisterUserAsync(dto, ct);
+            var result = await sender.Send(request, ct);
             return result.Match(
-                userId => TypedResults.Created($"users/{userId.Value}"),
+                response => TypedResults.Created($"users/{response.UserId.Value}"),
                 errors => CustomResults.ProblemFromErrors(errors));
         });
     }

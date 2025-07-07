@@ -6,10 +6,10 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email":"test@test.com",
+  "email":"test2@test.com",
   "password":"Test1234*",
-  "fullname":"Test",
-  "tenantName":"TestTenant"
+  "fullname":"Test2",
+  "tenantName":"TestTenant2"
 }
 
 ### Login
@@ -18,7 +18,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email":"test@test.com",
+  "email":"test2@test.com",
   "password":"Test1234*"
 }
 
@@ -28,5 +28,5 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "token":"tv2Dzgcd73Fdm5yOwkIfgfgTRLdnG6xM0GYRBaSv7Oo="
+  "token":"5ZYXTzQS8Kka3XNwZduMfwNitvj4tFl/Ul9vhlPUNcQ="
 }

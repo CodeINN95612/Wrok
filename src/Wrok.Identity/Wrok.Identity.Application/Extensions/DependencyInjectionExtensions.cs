@@ -4,9 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Wrok.Identity.Application.Abstractions.Common;
-using Wrok.Identity.Application.Abstractions.Services;
 using Wrok.Identity.Application.Common;
-using Wrok.Identity.Application.Services;
 using Wrok.Identity.Application.Settings;
 
 namespace Wrok.Identity.Application.Extensions;
@@ -19,9 +17,6 @@ public static class DependencyInjectionExtensions
         {
             cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly);
         });
-
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IUserService, UserService>();
 
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IRegexValidator, RegexValidator>();
@@ -36,6 +31,7 @@ public static class DependencyInjectionExtensions
     private static IServiceCollection AddSettings(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+        services.Configure<RefreshTokenSettings>(configuration.GetSection(RefreshTokenSettings.SectionName));
         return services;
     }
 }

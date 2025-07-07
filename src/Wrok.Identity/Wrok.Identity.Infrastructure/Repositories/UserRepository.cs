@@ -87,6 +87,11 @@ internal sealed class UserRepository(WrokIdentityDbContext db) : IUserRepository
         return user;
     }
 
+    public async Task<bool> IsUniqueByEmailAsync(string email, CancellationToken ct)
+    {
+        return await db.Users.AnyAsync(u => u.Email == email, ct);
+    }
+
     public void Update(User user)
     {
         db.Update(user);

@@ -7,6 +7,7 @@ public interface IUserRepository
     public Task<List<User>> GetAllAsync(CancellationToken ct);
     public Task<List<User>> GetAllByRoleAsync(UserRole role, CancellationToken ct);
     public Task<User?> GetByEmailAsync(string email, CancellationToken ct);
+    public Task<bool> IsUniqueByEmailAsync(string email, CancellationToken ct);
 
     public Task<User?> GetByRefreshTokenAsync(string token, CancellationToken ct);
 

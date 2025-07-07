@@ -5,9 +5,13 @@ using FluentValidation;
 
 using MediatR;
 
+using Microsoft.Extensions.Options;
+
 using Wrok.Identity.Application.Abstractions.Common;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Abstractions.UnitOfWork;
+using Wrok.Identity.Application.Policies;
+using Wrok.Identity.Application.Settings;
 
 namespace Wrok.Identity.Application.Features.Auth.RefreshTokens;
 
@@ -16,7 +20,8 @@ internal sealed class RefreshTokenCommandHandler(
     IRefreshTokenGenerator refreshTokenGenerator,
     IJwtGenerator jwtGenerator,
     IUserRepository userRepository,
-    IUnitOfWork unitOfWork)
+    IUnitOfWork unitOfWork,
+    IOptions<RefreshTokenSettings> refreshTokenSettings)
     : IRequestHandler<RefreshTokenRequest, ErrorOr<RefreshTokenResponse>>
 {
     public async Task<ErrorOr<RefreshTokenResponse>> Handle(RefreshTokenRequest request, CancellationToken ct)
@@ -49,7 +54,7 @@ internal sealed class RefreshTokenCommandHandler(
         var newJwt = jwtGenerator.Generate(user);
         var newToken = refreshTokenGenerator.Generate();
 
-        user.UpdateRefreshToken(newToken, DateTime.UtcNow.AddDays(5));
+        user.UpdateRefreshToken(newToken, new RefreshTokenSettingsExpirationPolicy(refreshTokenSettings.Value));
 
         userRepository.Update(user);
 
