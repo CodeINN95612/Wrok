@@ -1,4 +1,5 @@
 ﻿using Wrok.Identity.Domain.Enums;
+using Wrok.Identity.Domain.Policies;
 
 namespace Wrok.Identity.Domain.Entities;
 
@@ -51,8 +52,10 @@ public abstract class User
         PasswordHash = passwordHash;
     }
 
-    public void UpdateRefreshToken(string token, DateTime expiration)
+    public void UpdateRefreshToken(string token, IRefreshTokenExpirationPolicy expirationPolicy)
     {
+        var expiration = expirationPolicy.GetExpirationDate();
+
         if (RefreshToken is null)
         {
             RefreshToken = new RefreshToken(

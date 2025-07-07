@@ -1,4 +1,6 @@
-﻿namespace Wrok.Identity.Domain.Entities;
+﻿using Wrok.Identity.Domain.Policies;
+
+namespace Wrok.Identity.Domain.Entities;
 
 public sealed record RefreshTokenId(Guid Value);
 

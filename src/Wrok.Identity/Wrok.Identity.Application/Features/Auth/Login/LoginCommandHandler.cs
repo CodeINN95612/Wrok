@@ -5,9 +5,13 @@ using FluentValidation;
 
 using MediatR;
 
+using Microsoft.Extensions.Options;
+
 using Wrok.Identity.Application.Abstractions.Common;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Abstractions.UnitOfWork;
+using Wrok.Identity.Application.Policies;
+using Wrok.Identity.Application.Settings;
 
 namespace Wrok.Identity.Application.Features.Auth.Login;
 
@@ -17,7 +21,8 @@ public sealed class LoginCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IJwtGenerator jwtGenerator,
-    IRefreshTokenGenerator refreshTokenGenerator) : IRequestHandler<LoginRequest, ErrorOr<LoginResponse>>
+    IRefreshTokenGenerator refreshTokenGenerator,
+    IOptions<RefreshTokenSettings> refreshTokenSettings) : IRequestHandler<LoginRequest, ErrorOr<LoginResponse>>
 {
     public async Task<ErrorOr<LoginResponse>> Handle(LoginRequest request, CancellationToken ct)
     {
@@ -45,7 +50,9 @@ public sealed class LoginCommandHandler(
         var jwt = jwtGenerator.Generate(user);
         var refreshToken = refreshTokenGenerator.Generate();
 
-        user.UpdateRefreshToken(refreshToken, DateTime.UtcNow.AddDays(5));
+        user.UpdateRefreshToken(
+            refreshToken, 
+            new RefreshTokenSettingsExpirationPolicy(refreshTokenSettings.Value));
         userRepository.Update(user);
 
         await unitOfWork.SaveChangesAsync(ct);
