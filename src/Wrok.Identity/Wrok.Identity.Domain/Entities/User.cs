@@ -62,6 +62,7 @@ public abstract class User
                 this,
                 token,
                 expiration);
+            return;
         }
 
         RefreshToken.UpdateToken(token, expiration);
