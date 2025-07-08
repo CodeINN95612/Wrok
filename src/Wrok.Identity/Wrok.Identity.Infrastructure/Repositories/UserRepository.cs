@@ -1,4 +1,5 @@
 ﻿
+
 using Microsoft.EntityFrameworkCore;
 
 using Wrok.Identity.Application.Abstractions.Repositories;
@@ -11,48 +12,53 @@ internal sealed class UserRepository(WrokIdentityDbContext db) : IUserRepository
 {
     public async Task<List<User>> GetAllAsync(CancellationToken ct)
     {
-        var adminUsers = await db.Users
-            .OfType<AdminUser>()
+        var adminUsers = await db.AdminUsers
             .Include(u => u.Tenant)
             .Include(u => u.RefreshToken)
+            .Cast<User>()
             .ToListAsync(ct);
 
-        var projectManagerUsers = await db.Users
-            .OfType<ProjectManagerUser>()
+        var projectManagerUsers = await db.ProjectManagerUsers
             .Include(u => u.Tenant)
             .Include(u => u.RefreshToken)
+            .Cast<User>()
             .ToListAsync(ct);
 
-        var freelanceUsers = await db.Users
-            .OfType<FreelancerUser>()
+        var freelanceUsers = await db.FreelancerUsers
+            .Include(u => u.RefreshToken)
+            .Cast<User>()
             .ToListAsync(ct);
 
-        return [.. adminUsers, .. projectManagerUsers, .. freelanceUsers];
+        return adminUsers.Union(projectManagerUsers).Union(freelanceUsers).ToList();
     }
 
     public async Task<List<User>> GetAllByRoleAsync(UserRole role, CancellationToken ct)
     {
         if (role == UserRole.Admin)
         {
-            var users = await db.Users
-                .OfType<AdminUser>()
+            var users = await db.AdminUsers
                 .Include(u => u.Tenant)
                 .Include(u => u.RefreshToken)
+                .Cast<User>()
                 .ToListAsync(ct);
-            return [.. users];
+            return users;
         }
 
         if (role == UserRole.ProjectManager)
         {
-            var users = await db.Users
-                .OfType<ProjectManagerUser>()
+            var users = await db.ProjectManagerUsers
                 .Include(u => u.Tenant)
                 .Include(u => u.RefreshToken)
+                .Cast<User>()
                 .ToListAsync(ct);
-            return [.. users];
+            return users;
         }
 
-        return await db.Users.Where(u => u.Role == role).ToListAsync(ct);
+        var freeelancerUsers = await db.FreelancerUsers
+            .Include(u => u.RefreshToken)
+            .Cast<User>()
+            .ToListAsync(ct);
+        return freeelancerUsers;
     }
 
     public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
@@ -68,6 +74,21 @@ internal sealed class UserRepository(WrokIdentityDbContext db) : IUserRepository
 
         await LoadTenantAsync(user, ct);
 
+        return user;
+    }
+
+    public async Task<User?> GetByIdAsync(UserId id, CancellationToken ct)
+    {
+        var user = await db.Users
+            .Include(u => u.RefreshToken)
+            .FirstOrDefaultAsync(u => u.Id == id, ct);
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        await LoadTenantAsync(user, ct);
         return user;
     }
 
@@ -109,7 +130,6 @@ internal sealed class UserRepository(WrokIdentityDbContext db) : IUserRepository
             await db.Entry(projectManagerUser).Reference(u => u.Tenant).LoadAsync(ct);
             return;
         }
-        await Task.CompletedTask;
         return;
     }
 }

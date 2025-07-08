@@ -1,0 +1,9 @@
+@Wrok.Identity.Api_HostAddress = https://localhost:7010
+
+### GET ALL USERS
+GET {{Wrok.Identity.Api_HostAddress}}/users
+Accept: application/json
+
+
+### GET BY ID
+GET {{Wrok.Identity.Api_HostAddress}}/users/0197ddbf-0574-7e09-8954-dd1008336f9e

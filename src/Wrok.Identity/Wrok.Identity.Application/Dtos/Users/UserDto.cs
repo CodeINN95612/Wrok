@@ -1,37 +1,38 @@
-﻿using Wrok.Identity.Domain.Entities;
+﻿using Wrok.Identity.Application.Dtos.Tenants;
+using Wrok.Identity.Domain.Entities;
 
 namespace Wrok.Identity.Application.Dtos.Users;
 public sealed record UserDto(
-    UserId Id,
+    Guid Id,
     string Email,
     string FullName,
     string Role,
-    TenantId? TenantId)
+    TenantDto? Tenant)
 {
     public static UserDto FromUser(User user)
     {
         if (user is AdminUser admin)
         {
             return new UserDto(
-                admin.Id,
+                admin.Id.Value,
                 admin.Email,
                 admin.FullName,
                 user.Role.ToString(),
-                admin.TenantId);
+                new(admin.Tenant.Id.Value, admin.Tenant.Name));
         }
 
-        if (user is ProjectManagerUser projectManager)
+        if (user is ProjectManagerUser pm)
         {
             return new UserDto(
-                projectManager.Id,
-                projectManager.Email,
-                projectManager.FullName,
+                pm.Id.Value,
+                pm.Email,
+                pm.FullName,
                 user.Role.ToString(),
-                projectManager.TenantId);
+                new(pm.Tenant.Id.Value, pm.Tenant.Name));
         }
 
         return new UserDto(
-            user.Id,
+            user.Id.Value,
             user.Email,
             user.FullName,
             user.Role.ToString(),

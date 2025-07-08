@@ -21,8 +21,4 @@
     <ProjectReference Include="..\Wrok.Identity.Domain\Wrok.Identity.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Users\" />
-  </ItemGroup>
-
 </Project>

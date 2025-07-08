@@ -1,27 +1,21 @@
-﻿namespace Wrok.Identity.Api.Endpoints.Users;
+﻿using MediatR;
+
+using Wrok.Identity.Api.Common;
+using Wrok.Identity.Application.Features.Users;
+using Wrok.Identity.Application.Features.Users.GetAllUsers;
+
+namespace Wrok.Identity.Api.Endpoints.Users;
 
 public static class GetAllUsersEndpoint
 {
-    public sealed record GetAllUsersResponse(
-        Guid Id,
-        string Email,
-        string FullName,
-        string Role,
-        Guid? TenantId);
-
     public static void MapGetAllUsersEndpoint(this IEndpointRouteBuilder app)
     {
-        //app.MapGet("/users", async (UserRole? role, IUserService userService, CancellationToken ct) =>
-        //{
-        //    var result = await userService.GetAllUsersAsync(role, ct);
-        //    return result.Match(
-        //        users => TypedResults.Ok(users.Select(u => new GetAllUsersResponse(
-        //            u.Id.Value,
-        //            u.Email,
-        //            u.FullName,
-        //            u.Role.ToString(),
-        //            u.TenantId?.Value))),
-        //        errors => CustomResults.ProblemFromErrors(errors));
-        //});
+        app.MapGet("/users", async (ISender sender, CancellationToken ct) =>
+        {
+            var result = await sender.Send(new GetAllUsersRequest(), ct);
+            return result.Match(
+                users => TypedResults.Ok(users),
+                errors => CustomResults.ProblemFromErrors(errors));
+        });
     }
 }

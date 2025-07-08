@@ -27,9 +27,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapDefaultEndpoints();
+
 app.MapRegisterEndpoint();
 app.MapLoginEndpoint();
-app.MapGetAllUsersEndpoint();
 app.MapRefreshTokenEndpoint();
+
+app.MapGetAllUsersEndpoint();
+app.MapGetUserByIdEndpoint();
 
 app.Run();  

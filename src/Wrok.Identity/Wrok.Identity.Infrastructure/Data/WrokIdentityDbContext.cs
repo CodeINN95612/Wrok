@@ -9,7 +9,7 @@ internal sealed class WrokIdentityDbContext(DbContextOptions<WrokIdentityDbConte
     public DbSet<Tenant> Tenants { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<AdminUser> AdminUsers { get; set; } = default!;
-    public DbSet<FreelancerUser> FreelanceUsers { get; set; } = default!;
+    public DbSet<FreelancerUser> FreelancerUsers { get; set; } = default!;
     public DbSet<ProjectManagerUser> ProjectManagerUsers { get; set; } = default!;
     public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
 

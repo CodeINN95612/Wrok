@@ -37,6 +37,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "identity", "identity", "{9275DC0B-1910-4F13-9A0F-967C0C0A19D0}"
 	ProjectSection(SolutionItems) = preProject
 		docs\identity\Auth.http = docs\identity\Auth.http
+		docs\identity\Users.http = docs\identity\Users.http
 	EndProjectSection
 EndProject
 Global
