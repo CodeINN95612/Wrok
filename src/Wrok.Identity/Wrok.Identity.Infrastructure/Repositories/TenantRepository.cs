@@ -24,6 +24,7 @@ internal sealed class TenantRepository(WrokIdentityDbContext db) : ITenantReposi
         return await db.Tenants
             .Include(t => t.AdminUsers)
             .Include(t => t.ProjectManagerUsers)
+            .Include(t => t.Invitations)
             .FirstOrDefaultAsync(t => t.Id == tenantId, ct);
     }
 

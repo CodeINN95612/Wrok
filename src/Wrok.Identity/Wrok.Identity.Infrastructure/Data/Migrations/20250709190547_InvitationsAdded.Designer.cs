@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Wrok.Identity.Infrastructure.Data;
@@ -11,9 +12,11 @@ using Wrok.Identity.Infrastructure.Data;
 namespace Wrok.Identity.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(WrokIdentityDbContext))]
-    partial class WrokIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250709190547_InvitationsAdded")]
+    partial class InvitationsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

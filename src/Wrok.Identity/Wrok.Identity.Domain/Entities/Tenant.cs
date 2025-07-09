@@ -14,6 +14,9 @@ public sealed class Tenant
     private readonly List<ProjectManagerUser> _projectManagerUsers;
     public IReadOnlyCollection<ProjectManagerUser> ProjectManagerUsers => _projectManagerUsers.AsReadOnly();
 
+    private readonly List<Invitation> _invitations = [];
+    public IReadOnlyCollection<Invitation> Invitations => _invitations.AsReadOnly();
+
 #nullable disable
     private Tenant() { } // For EF Core
 #nullable enable
@@ -28,6 +31,7 @@ public sealed class Tenant
         _adminUsers = [];
         _projectManagerUsers = [];
     }
+
     public void UpdateName(string name)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
@@ -54,17 +58,43 @@ public sealed class Tenant
         _projectManagerUsers.Add(projectManagerUser);
     }
 
-    public void RemoveAdminUser(AdminUser adminUser)
+    public AdminUser? GetAdminUser(UserId userId)
     {
-        var existingUser = _adminUsers.FirstOrDefault(u => u.Id == adminUser.Id);
-        if (existingUser is null)
+        ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+        var user = _adminUsers.FirstOrDefault(u => u.Id == userId);
+        return user;
+    }
+
+    public void Invite(Invitation invitation)
+    {
+        ArgumentNullException.ThrowIfNull(invitation, nameof(invitation));
+        if (_invitations.Any(i => i.Email == invitation.Email))
         {
-            throw new InvalidOperationException("Admin user not found in the tenant.");
+            throw new InvalidOperationException("An invitation with the same email already exists.");
         }
-        if (existingUser.IsSuper)
+        _invitations.Add(invitation);
+    }
+
+    public void JoinByInvite(User user, string inviteCode)
+    {
+        ArgumentNullException.ThrowIfNull(user, nameof(user));
+        ArgumentException.ThrowIfNullOrWhiteSpace(inviteCode, nameof(inviteCode));
+        
+        var invitation = _invitations.FirstOrDefault(i => i.Code == inviteCode);
+        if (invitation is null)
         {
-            throw new InvalidOperationException("Cannot remove the super admin user from the tenant.");
+            throw new InvalidOperationException("Invitation not found or invalid.");
         }
-        _adminUsers.Remove(adminUser);
+
+        if (user is AdminUser adminUser)
+        {
+            AddAdminUser(adminUser);
+        }
+        else if (user is ProjectManagerUser projectManagerUser)
+        {
+            AddProjectManagerUser(projectManagerUser);
+        }
+
+        invitation.AcceptBy(user);
     }
 }

@@ -33,5 +33,10 @@ internal sealed class TenantEntityConfiguration : IEntityTypeConfiguration<Tenan
             .WithOne()
             .HasForeignKey(pmu => pmu.TenantId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(t => t.Invitations)
+            .WithOne(i => i.Tenant)
+            .HasForeignKey(i => i.InvitedToTenantId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

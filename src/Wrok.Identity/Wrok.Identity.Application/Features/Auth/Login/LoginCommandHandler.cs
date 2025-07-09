@@ -21,7 +21,7 @@ public sealed class LoginCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IJwtGenerator jwtGenerator,
-    IRefreshTokenGenerator refreshTokenGenerator,
+    ITokenGenerator refreshTokenGenerator,
     IOptions<RefreshTokenSettings> refreshTokenSettings) : IRequestHandler<LoginRequest, ErrorOr<LoginResponse>>
 {
     public async Task<ErrorOr<LoginResponse>> Handle(LoginRequest request, CancellationToken ct)

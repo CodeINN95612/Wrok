@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Wrok.Identity.Application.Abstractions.Providers;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Abstractions.UnitOfWork;
 using Wrok.Identity.Application.Settings;
 using Wrok.Identity.Infrastructure.Data;
+using Wrok.Identity.Infrastructure.Providers;
 using Wrok.Identity.Infrastructure.Repositories;
 
 namespace Wrok.Identity.Infrastructure.Extensions;
@@ -23,6 +26,8 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<IIdentityProvider, IdentityProvider>();
 
         return services;
     }
@@ -70,6 +75,38 @@ public static class DependencyInjectionExtensions
         services.AddAuthorization();
 
         return services;
+    }
+
+    public static IApplicationBuilder UseInfrastructureAuth(this IApplicationBuilder app)
+    {
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        // Middleware to set the identity provider's UserId and TenantId from the authenticated user
+        app.Use(async (context, next) =>
+        {
+            var identityProvider = context.RequestServices.GetRequiredService<IIdentityProvider>();
+
+            if (context.User?.Identity?.IsAuthenticated == true)
+            {
+                var userId = context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                var tenantId = context.User.FindFirst("tenant")?.Value;
+
+                if (!string.IsNullOrEmpty(userId) && Guid.TryParse(userId, out Guid userIdGuid))
+                {
+                    identityProvider.UserId = new(userIdGuid);
+                }
+
+                if (!string.IsNullOrEmpty(tenantId) && Guid.TryParse(tenantId, out Guid tenantIdGuid))
+                {
+                    identityProvider.TenantId = new(tenantIdGuid);
+                }
+            }
+
+            await next();
+        });
+
+        return app;
     }
 
 }

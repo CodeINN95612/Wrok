@@ -26,11 +26,20 @@
 
 - Jwt Validation, Auth, Authz
 
+### 0.4.0
+
+- Identity Provider
+- Tenant Joining with role (generate invitation)
+
+### 0.4.1
+
 ### Doing
 
+- Add invited user to tenant
 
 ## TODO
-- Tenant Joining with role (invitations)
+
+- Ids to record structs
 - Unit Tests
 - Email Confirmation
 - Email invitation
@@ -39,8 +48,9 @@
 - Apply Row Level Security with EF interceptors
 - Add Custom Error Codes
 - Extension for FluentValidation Error to ErrorOr
-- Add Scalar for OpenApi doc
+- Add Scalar for OpenApi doc?
 - Pagination?
 - Deployment
-- MediatR license
+    - Postgresql flexible azure deployment
+    - MediatR license
 - SHould JWT Generation be on infrastructure layer?

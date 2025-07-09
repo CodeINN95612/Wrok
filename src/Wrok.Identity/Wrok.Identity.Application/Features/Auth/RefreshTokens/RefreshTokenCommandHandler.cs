@@ -17,7 +17,7 @@ namespace Wrok.Identity.Application.Features.Auth.RefreshTokens;
 
 internal sealed class RefreshTokenCommandHandler(
     IValidator<RefreshTokenRequest> validator,
-    IRefreshTokenGenerator refreshTokenGenerator,
+    ITokenGenerator refreshTokenGenerator,
     IJwtGenerator jwtGenerator,
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
