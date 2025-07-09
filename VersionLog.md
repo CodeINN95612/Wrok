@@ -22,16 +22,25 @@
 - Users Get All
 - Users Get by Id
 
+### 0.3.0
+
+- Jwt Validation, Auth, Authz
+
 ### Doing
 
 
 ## TODO
+- Tenant Joining with role (invitations)
+- Unit Tests
+- Email Confirmation
+- Email invitation
+- DateTime provider for testing
 - Group Endpoints
 - Apply Row Level Security with EF interceptors
 - Add Custom Error Codes
 - Extension for FluentValidation Error to ErrorOr
-- Jwt Validation, Auth, Authz
 - Add Scalar for OpenApi doc
 - Pagination?
 - Deployment
 - MediatR license
+- SHould JWT Generation be on infrastructure layer?

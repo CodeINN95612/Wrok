@@ -1,5 +1,5 @@
 ﻿namespace Wrok.Identity.Application.Settings;
-internal sealed class JwtSettings
+public sealed class JwtSettings
 {
     public const string SectionName = "Jwt";
     public required string Issuer { get; init; }
