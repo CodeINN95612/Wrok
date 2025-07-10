@@ -37,6 +37,8 @@ app.MapRefreshTokenEndpoint();
 
 app.MapGetAllUsersEndpoint();
 app.MapGetUserByIdEndpoint();
+
 app.MapInviteEndpoint();
+app.MapAcceptInviteEndpoint();
 
 app.Run();  

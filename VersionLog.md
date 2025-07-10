@@ -33,13 +33,15 @@
 
 ### 0.4.1
 
-### Doing
-
 - Add invited user to tenant
+- Fixed other stuff in invites
+- Add tenant validation to users features
+
+### Doing
 
 ## TODO
 
-- Ids to record structs
+- Ids to record structs if possible lets see.
 - Unit Tests
 - Email Confirmation
 - Email invitation

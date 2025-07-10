@@ -65,6 +65,15 @@ public sealed class Tenant
         return user;
     }
 
+    public User? GetUser(UserId userId)
+    {
+        ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+        User? user = _adminUsers.FirstOrDefault(u => u.Id == userId);
+        user ??= _projectManagerUsers.FirstOrDefault(u => u.Id == userId);
+
+        return user;
+    }
+
     public void Invite(Invitation invitation)
     {
         ArgumentNullException.ThrowIfNull(invitation, nameof(invitation));

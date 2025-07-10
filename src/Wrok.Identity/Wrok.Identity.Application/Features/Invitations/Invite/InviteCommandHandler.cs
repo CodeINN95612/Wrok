@@ -14,9 +14,6 @@ using Wrok.Identity.Domain.Enums;
 
 namespace Wrok.Identity.Application.Features.Invitations.Invite;
 
-public record struct InviteRequest(string Email, string Role) : IRequest<ErrorOr<InviteResponse>>;
-public record struct InviteResponse(InvitationId InviteId);
-
 internal sealed class InviteCommandHandler(
     IValidator<InviteRequest> validator,
     IIdentityProvider identityProvider,
@@ -30,9 +27,15 @@ internal sealed class InviteCommandHandler(
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors
-                .Select(error => Error.Validation(error.PropertyName, error.ErrorMessage))
+                .Select(error => Error.Validation($"Invite.{error.PropertyName}.{error.ErrorCode}", error.ErrorMessage))
                 .ToList();
             return errors;
+        }
+
+        UserRole? role = Enum.TryParse<UserRole>(request.Role, true, out var userRole) ? userRole : null;
+        if (role is null or UserRole.Freelancer)
+        {
+            return Error.Validation("Invite.InvalidRole", "Invalid user role specified.");
         }
 
         var tenantId = identityProvider.TenantId!;
@@ -41,19 +44,13 @@ internal sealed class InviteCommandHandler(
         var tenant = await tenantRepository.GetByIdAsync(tenantId, cancellationToken);
         if (tenant is null)
         {
-            return Error.NotFound("Tenant", "Tenant not found.");
+            return Error.NotFound("Invite.TenantNotFound", "Tenant not found.");
         }
 
         var user = tenant.GetAdminUser(userId);
         if (user is null)
         {
-            return Error.NotFound("User", "User not found in the tenant as an admin.");
-        }
-
-        UserRole? role = Enum.TryParse<UserRole>(request.Role, true, out var userRole) ? userRole : null;
-        if (role is null)
-        {
-            return Error.Validation("Role", "Invalid user role specified.");
+            return Error.NotFound("Invite.UserNotFound", "User not found in the tenant as an admin.");
         }
 
         var generateInviteCode = tokenGenerator.Generate(10);
@@ -65,17 +62,5 @@ internal sealed class InviteCommandHandler(
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new InviteResponse(invitation.Id);
-    }
-}
-
-internal sealed class InviteRequestValidator : AbstractValidator<InviteRequest>
-{
-    public InviteRequestValidator(IRegexValidator validator)
-    {
-        RuleFor(x => x.Email)
-            .NotEmpty()
-            .Must(validator.IsValidEmail);
-        RuleFor(x => x.Role)
-            .NotEmpty();
     }
 }

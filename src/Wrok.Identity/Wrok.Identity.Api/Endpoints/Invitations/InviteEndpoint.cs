@@ -13,9 +13,9 @@ public static class InviteEndpoint
 {
     public static IEndpointRouteBuilder MapInviteEndpoint(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/invitations", async (InviteRequest request, ISender sender) =>
+        endpoints.MapPost("/invitations", async (InviteRequest request, ISender sender, CancellationToken ct) =>
         {
-            var result = await sender.Send(request);
+            var result = await sender.Send(request, ct);
             return result.Match(
                 response => TypedResults.Created($"/invitations/{response.InviteId.Value}"),
                 errors => CustomResults.ProblemFromErrors(errors));

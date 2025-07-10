@@ -3,6 +3,7 @@ using ErrorOr;
 
 using MediatR;
 
+using Wrok.Identity.Application.Abstractions.Providers;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Dtos.Users;
 using Wrok.Identity.Domain.Entities;
@@ -13,12 +14,28 @@ public sealed record GetUserByIdRequest(Guid UserId) : IRequest<ErrorOr<GetUserB
 public sealed record GetUserByIdResponse(UserDto User);
 
 internal sealed class GetUserByIdCommandHandler(
-    IUserRepository userRepository) : IRequestHandler<GetUserByIdRequest, ErrorOr<GetUserByIdResponse>>
+    IIdentityProvider identityProvider,
+    ITenantRepository tenantRepository) : IRequestHandler<GetUserByIdRequest, ErrorOr<GetUserByIdResponse>>
 {
-    public async Task<ErrorOr<GetUserByIdResponse>> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<GetUserByIdResponse>> Handle(GetUserByIdRequest request, CancellationToken ct)
     {
+        var tenantId = identityProvider.TenantId;
+        if (tenantId is null)
+        {
+            return Error.Forbidden("GetUserById.NotAuthenticated");
+        }
+
+        var tenant = await tenantRepository.GetByIdAsync(tenantId, ct);
+        if (tenant is null)
+        {
+            return Error.NotFound(
+                code: "GetUserById.TenantNotFound",
+                description: $"Tenant not found.");
+        }
+
         var id = new UserId(request.UserId);
-        var user = await userRepository.GetByIdAsync(id, cancellationToken);
+        var user = tenant.GetUser(id);
+
         if (user is null)
         {
             return Error.NotFound(
