@@ -103,10 +103,6 @@ public sealed class Tenant
         {
             AddProjectManagerUser(projectManagerUser);
         }
-        else
-        {
-            throw new InvalidOperationException("User type is not supported for tenant joining.");
-        }
 
         invitation.AcceptBy(user);
     }

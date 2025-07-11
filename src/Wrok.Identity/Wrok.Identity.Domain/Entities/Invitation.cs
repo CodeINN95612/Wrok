@@ -30,6 +30,11 @@ public class Invitation
         UserRole role,
         string code)
     {
+        if (role is not UserRole.ProjectManager and not UserRole.Admin)
+        {
+            throw new ArgumentException("Invalid role for invitation.", nameof(role));
+        }
+
         Id = new(Guid.CreateVersion7());
         InvitedToTenantId = invitedBy.Tenant.Id;
         Tenant = invitedBy.Tenant;

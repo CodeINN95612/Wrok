@@ -6,7 +6,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email":"test2@test.com",
+  "email":"test25test.com",
   "password":"Test1234",
   "fullname":"",
   "tenantName":"TestTenant2"
@@ -28,5 +28,5 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "token":"5ZYXTzQS8Kka3XNwZduMfwNitvj4tFl/Ul9vhlPUNcQ="
+  "token":""
 }

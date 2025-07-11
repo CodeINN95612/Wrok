@@ -23,10 +23,6 @@ public sealed class AdminUser : User
 
     internal void JoinTenant(Tenant tenant)
     {
-        if (tenant.Id.Value == Guid.Empty)
-        {
-            throw new ArgumentException("Tenant ID cannot be empty.", nameof(tenant.Id));
-        }
         TenantId = tenant.Id;
         Tenant = tenant;
         JoinedTenantAt = DateTime.UtcNow;

@@ -10,7 +10,7 @@ internal static class CommonErrors
         $"{resource} not found.");
 
     public static ApplicationError ResourceRequired(string prefix, string resource) =>
-        new($"{prefix}.Required", $"{resource} not found");
+        new($"{prefix}.Required", $"{resource} is mandatory");
 
     public static ApplicationError ResourceInvalid(string prefix, string resource) =>
         new($"{prefix}.Invalid", $"{resource} is invalid.");
