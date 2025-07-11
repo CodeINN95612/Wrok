@@ -6,12 +6,11 @@ using MediatR;
 using Wrok.Identity.Application.Abstractions.Providers;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Dtos.Users;
+using Wrok.Identity.Application.Extensions;
+using Wrok.Identity.Application.Features.Users.GetUserById;
 using Wrok.Identity.Domain.Entities;
 
 namespace Wrok.Identity.Application.Features.Users.GetById;
-
-public sealed record GetUserByIdRequest(Guid UserId) : IRequest<ErrorOr<GetUserByIdResponse>>;
-public sealed record GetUserByIdResponse(UserDto User);
 
 internal sealed class GetUserByIdCommandHandler(
     IIdentityProvider identityProvider,
@@ -22,15 +21,13 @@ internal sealed class GetUserByIdCommandHandler(
         var tenantId = identityProvider.TenantId;
         if (tenantId is null)
         {
-            return Error.Forbidden("GetUserById.NotAuthenticated");
+            return GetUserByIdErrors.NotAuthenticated.ToErrorOr(ErrorType.Unauthorized);
         }
 
         var tenant = await tenantRepository.GetByIdAsync(tenantId, ct);
         if (tenant is null)
         {
-            return Error.NotFound(
-                code: "GetUserById.TenantNotFound",
-                description: $"Tenant not found.");
+            return GetUserByIdErrors.TenantNotFound.ToErrorOr(ErrorType.NotFound);
         }
 
         var id = new UserId(request.UserId);
@@ -38,9 +35,7 @@ internal sealed class GetUserByIdCommandHandler(
 
         if (user is null)
         {
-            return Error.NotFound(
-                code: "GetUserById.UserNotFound",
-                description: $"User with ID {request.UserId} not found.");
+            return GetUserByIdErrors.UserNotFound.ToErrorOr(ErrorType.NotFound);
         }
 
         var userDto = UserDto.FromUser(user);

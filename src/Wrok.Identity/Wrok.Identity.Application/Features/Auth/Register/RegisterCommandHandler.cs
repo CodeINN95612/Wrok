@@ -8,6 +8,7 @@ using MediatR;
 using Wrok.Identity.Application.Abstractions.Common;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Abstractions.UnitOfWork;
+using Wrok.Identity.Application.Extensions;
 using Wrok.Identity.Domain.Entities;
 
 namespace Wrok.Identity.Application.Features.Auth.Register;
@@ -25,16 +26,13 @@ internal sealed class RegisterCommandHandler(
         var validationResult = validator.Validate(request);
         if (!validationResult.IsValid)
         {
-            var errors = validationResult.Errors
-                .Select(error => Error.Validation($"Register.{error.PropertyName}.{error.ErrorCode}", error.ErrorMessage))
-                .ToList();
-            return errors;
+            return validationResult.Errors.ToErrorOr();
         }
 
         var userExists = await userRepository.IsUniqueByEmailAsync(request.Email, ct);
         if (userExists)
         {
-            return Error.Conflict("Register.Email.AlreadyInUse", "Email is already in use.");
+            return RegisterErrors.EmailAlreadyInUse.ToErrorOr(ErrorType.Conflict);
         }
 
         var tenant = new Tenant(request.TenantName);

@@ -9,6 +9,7 @@ using Wrok.Identity.Application.Abstractions.Common;
 using Wrok.Identity.Application.Abstractions.Providers;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Abstractions.UnitOfWork;
+using Wrok.Identity.Application.Extensions;
 using Wrok.Identity.Domain.Entities;
 using Wrok.Identity.Domain.Enums;
 
@@ -26,16 +27,7 @@ internal sealed class InviteCommandHandler(
         var validationResult = validator.Validate(request); 
         if (!validationResult.IsValid)
         {
-            var errors = validationResult.Errors
-                .Select(error => Error.Validation($"Invite.{error.PropertyName}.{error.ErrorCode}", error.ErrorMessage))
-                .ToList();
-            return errors;
-        }
-
-        UserRole? role = Enum.TryParse<UserRole>(request.Role, true, out var userRole) ? userRole : null;
-        if (role is null or UserRole.Freelancer)
-        {
-            return Error.Validation("Invite.InvalidRole", "Invalid user role specified.");
+            return validationResult.Errors.ToErrorOr();
         }
 
         var tenantId = identityProvider.TenantId!;
@@ -44,17 +36,19 @@ internal sealed class InviteCommandHandler(
         var tenant = await tenantRepository.GetByIdAsync(tenantId, cancellationToken);
         if (tenant is null)
         {
-            return Error.NotFound("Invite.TenantNotFound", "Tenant not found.");
+            return InviteErrors.TenantNotFound.ToErrorOr(ErrorType.Unauthorized);
         }
 
         var user = tenant.GetAdminUser(userId);
         if (user is null)
         {
-            return Error.NotFound("Invite.UserNotFound", "User not found in the tenant as an admin.");
+            return InviteErrors.UserNotFound.ToErrorOr(ErrorType.Forbidden);
         }
 
+        UserRole role = Enum.Parse<UserRole>(request.Role, true);
         var generateInviteCode = tokenGenerator.Generate(10);
-        var invitation = new Invitation(user, request.Email, role.Value, generateInviteCode);
+
+        var invitation = new Invitation(user, request.Email, role, generateInviteCode);
 
         tenant.Invite(invitation);
         tenantRepository.Update(tenant);

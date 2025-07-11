@@ -37,18 +37,22 @@
 - Fixed other stuff in invites
 - Add tenant validation to users features
 
+### 0.4.2
+
+- Add Custom Error Codes
+
 ### Doing
+
 
 ## TODO
 
 - Ids to record structs if possible lets see.
-- Unit Tests
 - Email Confirmation
 - Email invitation
+- Unit Tests
 - DateTime provider for testing
 - Group Endpoints
 - Apply Row Level Security with EF interceptors
-- Add Custom Error Codes
 - Extension for FluentValidation Error to ErrorOr
 - Add Scalar for OpenApi doc?
 - Pagination?

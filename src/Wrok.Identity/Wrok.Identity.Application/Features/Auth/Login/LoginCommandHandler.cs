@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Wrok.Identity.Application.Abstractions.Common;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Abstractions.UnitOfWork;
+using Wrok.Identity.Application.Extensions;
 using Wrok.Identity.Application.Policies;
 using Wrok.Identity.Application.Settings;
 
@@ -29,22 +30,19 @@ public sealed class LoginCommandHandler(
         var validationResult = validator.Validate(request);
         if (!validationResult.IsValid)
         {
-            var errors = validationResult.Errors
-                .Select(error => Error.Validation($"Login.{error.PropertyName}.{error.ErrorCode}", error.ErrorMessage))
-                .ToList();
-            return errors;
+            return validationResult.Errors.ToErrorOr();
         }
 
         var user = await userRepository.GetByEmailAsync(request.Email, ct);
         if (user is null)
         {
-            return Error.Validation("Login.InvalidCredentials", "Invalid email or password.");
+            return LoginErrors.InvalidCredentials.ToErrorOr(ErrorType.Unauthorized);
         }
-
+        
         var passwordHash = passwordHasher.Hash(request.Password, user.Salt);
         if (user.PasswordHash != passwordHash)
         {
-            return Error.Validation("Login.InvalidCredentials", "Invalid email or password.");
+            return LoginErrors.InvalidCredentials.ToErrorOr(ErrorType.Unauthorized);
         }
 
         var jwt = jwtGenerator.Generate(user);

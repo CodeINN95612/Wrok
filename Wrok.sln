@@ -41,6 +41,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "identity", "identity", "{92
 		docs\identity\Users.http = docs\identity\Users.http
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{75C14C3C-6046-4D5D-8D96-70EE680A62F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrok.Identity.Domain.Tests", "src\Wrok.Identity\Tests\Wrok.Identity.Domain.Tests\Wrok.Identity.Domain.Tests.csproj", "{801A0198-9F71-4D5B-A9D0-A6B76D7D14B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,10 @@ Global
 		{98D65165-61E9-4723-BAB9-A8ADE1921108}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98D65165-61E9-4723-BAB9-A8ADE1921108}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98D65165-61E9-4723-BAB9-A8ADE1921108}.Release|Any CPU.Build.0 = Release|Any CPU
+		{801A0198-9F71-4D5B-A9D0-A6B76D7D14B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{801A0198-9F71-4D5B-A9D0-A6B76D7D14B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{801A0198-9F71-4D5B-A9D0-A6B76D7D14B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{801A0198-9F71-4D5B-A9D0-A6B76D7D14B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +91,8 @@ Global
 		{0B0E0FAE-C43F-4506-9828-D222F7D86335} = {746670C9-7EEB-40AA-B58C-B801F2219271}
 		{98D65165-61E9-4723-BAB9-A8ADE1921108} = {746670C9-7EEB-40AA-B58C-B801F2219271}
 		{9275DC0B-1910-4F13-9A0F-967C0C0A19D0} = {F3E736C6-0EE2-4B08-9DD1-2C26F5A42BFC}
+		{75C14C3C-6046-4D5D-8D96-70EE680A62F0} = {746670C9-7EEB-40AA-B58C-B801F2219271}
+		{801A0198-9F71-4D5B-A9D0-A6B76D7D14B2} = {75C14C3C-6046-4D5D-8D96-70EE680A62F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DEB48F7B-0220-4D14-9FDA-CAFB558CD2A7}

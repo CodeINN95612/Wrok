@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Wrok.Identity.Application.Abstractions.Common;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Abstractions.UnitOfWork;
+using Wrok.Identity.Application.Extensions;
 using Wrok.Identity.Application.Policies;
 using Wrok.Identity.Application.Settings;
 
@@ -29,26 +30,23 @@ internal sealed class RefreshTokenCommandHandler(
         var validationResult = validator.Validate(request);
         if (!validationResult.IsValid)
         {
-            var errors = validationResult.Errors
-                .Select(error => Error.Validation($"RefreshToken.{error.PropertyName}.{error.ErrorCode}", error.ErrorMessage))
-                .ToList();
-            return errors;
+            return validationResult.Errors.ToErrorOr();
         }
 
         var user = await userRepository.GetByRefreshTokenAsync(request.Token, ct);
         if (user is null || user.RefreshToken is null)
         {
-            return Error.NotFound("RefresheToken.NotFound", "Refresh Token Invalid");
+            return RefreshTokenErrors.RefreshTokenUserNotFound.ToErrorOr(ErrorType.Unauthorized);
         }
 
         if (user.RefreshToken.IsRevoked)
         {
-            return Error.Conflict("RefreshToken.Revoked", "The refresh token has been revoked.");
+            return RefreshTokenErrors.RefreshTokenRevoked.ToErrorOr(ErrorType.Unauthorized);
         }
 
         if (user.RefreshToken.IsExpired)
         {
-            return Error.Conflict("RefreshToken.Expired", "The refresh token has expired.");
+            return RefreshTokenErrors.RefreshTokenExpired.ToErrorOr(ErrorType.Unauthorized);
         }
 
         var newJwt = jwtGenerator.Generate(user);

@@ -1,7 +1,4 @@
-﻿
-using System;
-
-using ErrorOr;
+﻿using ErrorOr;
 
 using FluentValidation;
 
@@ -10,17 +7,10 @@ using MediatR;
 using Wrok.Identity.Application.Abstractions.Common;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Abstractions.UnitOfWork;
+using Wrok.Identity.Application.Extensions;
 using Wrok.Identity.Domain.Entities;
 
 namespace Wrok.Identity.Application.Features.Invitations.AcceptInvitation;
-
-public sealed record AcceptInvitationRequest(
-    string Code,
-    string Email,
-    string Password,
-    string Fullname) : IRequest<ErrorOr<AcceptInvitationResponse>>;
-
-public record struct AcceptInvitationResponse(UserId createdUserId);
 
 internal sealed class AcceptInvitationCommandHandler(
     IValidator<AcceptInvitationRequest> validator,
@@ -34,21 +24,18 @@ internal sealed class AcceptInvitationCommandHandler(
         var validationResult = validator.Validate(request);
         if (!validationResult.IsValid)
         {
-            var errors = validationResult.Errors
-                .Select(error => Error.Validation($"AcceptInvitation.{error.PropertyName}.{error.ErrorCode}", error.ErrorMessage))
-                .ToList();
-            return errors;
+            return validationResult.Errors.ToErrorOr();
         }
 
         var invitation = await invitationRepository.GetByCodeAsync(request.Code, ct);
         if (invitation is null)
         {
-            return Error.NotFound("AcceptInvitation.NotFound", "Invitation not found.");
+            return AcceptInvitationErrors.InvitationNotFound.ToErrorOr(ErrorType.NotFound);
         }
-        
+
         if (invitation.AcceptedAt.HasValue)
         {
-            return Error.Validation("AcceptInvitation.AlreadyAccepted", "Invitation has already been accepted.");
+            return AcceptInvitationErrors.InvitationAlreadyAccepted.ToErrorOr(ErrorType.Conflict);
         }
 
         var (passwordHash, salt) = passwordHasher.Hash(request.Password);
@@ -61,28 +48,11 @@ internal sealed class AcceptInvitationCommandHandler(
         };
 
         invitation.Tenant.JoinByInvite(user, request.Code);
-        
+
         tenantRepository.Update(invitation.Tenant);
 
         await unitOfWork.SaveChangesAsync(ct);
 
         return new AcceptInvitationResponse(user.Id);
-    }
-}
-
-internal sealed class AcceptInvitationRequestValidator : AbstractValidator<AcceptInvitationRequest>
-{
-    public AcceptInvitationRequestValidator(IRegexValidator regexValidator)
-    {
-        RuleFor(x => x.Code)
-            .NotEmpty();
-        RuleFor(x => x.Email)
-            .NotEmpty()
-            .Must(regexValidator.IsValidEmail);
-        RuleFor(x => x.Password)
-            .NotEmpty()
-            .Must(regexValidator.IsValidPassword);
-        RuleFor(x => x.Fullname)
-            .NotEmpty();
     }
 }

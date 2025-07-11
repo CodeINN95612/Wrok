@@ -1,13 +1,12 @@
 ﻿
 using ErrorOr;
 
-using FluentValidation;
-
 using MediatR;
 
 using Wrok.Identity.Application.Abstractions.Providers;
 using Wrok.Identity.Application.Abstractions.Repositories;
 using Wrok.Identity.Application.Dtos.Users;
+using Wrok.Identity.Application.Extensions;
 using Wrok.Identity.Domain.Entities;
 
 namespace Wrok.Identity.Application.Features.Users.GetAllUsers;
@@ -21,13 +20,13 @@ internal sealed class GetAllUsersCommandHandler(
         var tenantId = identityProvider.TenantId;
         if (tenantId is null)
         {
-            return Error.Forbidden("GetAllUsers.NotAuthenticated", "Must be authenticated.");
+            return GetAllUsersErrors.NotAuthenticated.ToErrorOr(ErrorType.Unauthorized);
         }
 
         var tenant = await tenantRepository.GetByIdAsync(tenantId, ct);
         if (tenant is null)
         {
-            return Error.NotFound("GetAllUsers.TenantNotFound", "Tenant not found.");
+            return GetAllUsersErrors.TenantNotFound.ToErrorOr(ErrorType.Forbidden);
         }
 
         var users = tenant
