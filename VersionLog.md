@@ -54,6 +54,10 @@
 - Identity Domain Tests
 - Some fixes
 
+### 0.5.1
+
+- Application tests
+
 ### Doing
 
 - Unit Tests
