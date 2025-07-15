@@ -8,8 +8,12 @@ var pg = builder
 
 var identityDb = pg.AddDatabase("wrok-identity-db");
 
-builder
+var identityApi = builder
     .AddProject<Projects.Wrok_Identity_Api>("wrok-identity-api")
-    .WithReference(identityDb);
+    .WithReference(identityDb).WaitFor(identityDb);
+
+builder.AddProject<Projects.Wrok_Gateway>("wrok-gateway")
+    .WithExternalHttpEndpoints()
+    .WithReference(identityApi).WaitFor(identityApi);
 
 builder.Build().Run();

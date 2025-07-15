@@ -1,4 +1,4 @@
-@Wrok.Identity.Api_HostAddress = https://localhost:7010
+@Wrok.Identity.Api_HostAddress = https://localhost:7062/identity
 
 ### GET ALL USERS
 GET {{Wrok.Identity.Api_HostAddress}}/users

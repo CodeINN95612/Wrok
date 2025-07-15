@@ -45,6 +45,7 @@
 
 ### 0.4.2
 
+- Extension for FluentValidation Error to ErrorOr
 - Add Custom Error Codes
 
 ## 0.5
@@ -58,9 +59,14 @@
 
 - Application tests
 
+## 0.6
+
+### 0.6.0
+
+- Set up api gateway
+
 ### Doing
 
-- Unit Tests
 
 ## TODO
 
@@ -70,10 +76,10 @@
 - DateTime provider for testing
 - Group Endpoints
 - Apply Row Level Security with EF interceptors
-- Extension for FluentValidation Error to ErrorOr
 - Add Scalar for OpenApi doc?
 - Pagination?
 - Deployment
     - Postgresql flexible azure deployment
     - MediatR license
 - SHould JWT Generation be on infrastructure layer?
+- Infra Unit Tests?
