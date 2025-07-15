@@ -59,14 +59,23 @@
 
 - Application tests
 
-## 0.6
+## 0.6 - Api Gateway
 
 ### 0.6.0
 
 - Set up api gateway
 
+## 0.7 - Deployment
+
+### 0.7.0
+
+- MediatR license
+- JWT Secret as parameter
+
 ### Doing
 
+- Deployment
+    - Postgresql flexible azure deployment
 
 ## TODO
 
@@ -75,11 +84,8 @@
 - Email invitation
 - DateTime provider for testing
 - Group Endpoints
+- Pagination?
 - Apply Row Level Security with EF interceptors
 - Add Scalar for OpenApi doc?
-- Pagination?
-- Deployment
-    - Postgresql flexible azure deployment
-    - MediatR license
 - SHould JWT Generation be on infrastructure layer?
 - Infra Unit Tests?

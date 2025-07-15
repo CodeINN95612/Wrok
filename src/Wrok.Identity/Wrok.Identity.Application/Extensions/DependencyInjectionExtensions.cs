@@ -16,6 +16,7 @@ public static class DependencyInjectionExtensions
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly);
+            cfg.LicenseKey = configuration["Mediatr:License"];
         });
 
         services.AddScoped<IPasswordHasher, PasswordHasher>();
