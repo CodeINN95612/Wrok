@@ -76,6 +76,9 @@
 
 - Deployment
     - Postgresql flexible azure deployment
+    - azd init, provision, up
+    - azd pipeline config Github Actions
+    - Add testing to github actions
 
 ## TODO
 

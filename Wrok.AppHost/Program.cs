@@ -7,10 +7,11 @@ var jwtExpirationMinutes = builder.AddParameter("jwt-expiration-minutes", "10", 
 var jwtSecret = builder.AddParameter("jwt-secret", "this-should-be-a-super-secret-key-123456789", secret: true);
 
 var pg = builder
-    .AddPostgres("postgres")
-    .WithHostPort(55432)
-    .WithDataVolume()
-    .WithPgAdmin();
+    .AddAzurePostgresFlexibleServer("postgres")
+    .RunAsContainer(c => 
+        c.WithHostPort(55432)
+            .WithDataVolume()
+            .WithPgAdmin());
 
 var identityDb = pg.AddDatabase("wrok-identity-db");
 
