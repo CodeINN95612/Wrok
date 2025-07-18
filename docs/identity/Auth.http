@@ -1,4 +1,4 @@
-@Wrok.Identity.Api_HostAddress = https://localhost:7062/identity
+@Wrok.Identity.Api_HostAddress = https://localhost:7010
 
 ### Register
 POST {{Wrok.Identity.Api_HostAddress}}/auth/register/
@@ -6,10 +6,10 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email":"test25test.com",
-  "password":"Test1234",
-  "fullname":"",
-  "tenantName":"TestTenant2"
+  "email":"test@test.com",
+  "password":"Test1234*",
+  "fullname":"Test 1",
+  "tenantName":"TestTenant1"
 }
 
 ### Login

@@ -6,10 +6,17 @@ var mediatrLicense = builder.AddParameter("mediatr-license", secret: true);
 var jwtExpirationMinutes = builder.AddParameter("jwt-expiration-minutes", "10", secret: false);
 var jwtSecret = builder.AddParameter("jwt-secret", "this-should-be-a-super-secret-key-123456789", secret: true);
 
+var dbUser = builder.AddParameter("db-user", "default", secret: true);
+var dbPassword = builder.AddParameter("db-password", "default-password", secret: true);
+
 var pg = builder
     .AddAzurePostgresFlexibleServer("postgres")
+    .WithPasswordAuthentication(dbUser, dbPassword)
     .RunAsContainer(c => 
-        c.WithHostPort(55432)
+        c
+            .WithUserName(dbUser)
+            .WithPassword(dbPassword)
+            .WithHostPort(55432)
             .WithDataVolume()
             .WithPgAdmin());
 
