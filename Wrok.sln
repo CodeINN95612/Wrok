@@ -49,6 +49,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrok.Identity.Application.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrok.Gateway", "src\Wrok.Gateway\Wrok.Gateway\Wrok.Gateway.csproj", "{5A4BE3FC-FD51-7BAF-47D8-2D64D03C29CE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{E605698D-0474-49CC-A115-DC123CBA2559}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\azure-dev.yml = .github\workflows\azure-dev.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +112,7 @@ Global
 		{801A0198-9F71-4D5B-A9D0-A6B76D7D14B2} = {75C14C3C-6046-4D5D-8D96-70EE680A62F0}
 		{4C673944-5D10-4C5D-9D1C-74C2FEC11317} = {75C14C3C-6046-4D5D-8D96-70EE680A62F0}
 		{5A4BE3FC-FD51-7BAF-47D8-2D64D03C29CE} = {5334EA01-89F7-4693-AA4D-6CD9C44223CE}
+		{E605698D-0474-49CC-A115-DC123CBA2559} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DEB48F7B-0220-4D14-9FDA-CAFB558CD2A7}
