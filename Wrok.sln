@@ -49,7 +49,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrok.Identity.Application.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrok.Gateway", "src\Wrok.Gateway\Wrok.Gateway\Wrok.Gateway.csproj", "{5A4BE3FC-FD51-7BAF-47D8-2D64D03C29CE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{E605698D-0474-49CC-A115-DC123CBA2559}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{E605698D-0474-49CC-A115-DC123CBA2559}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\azure-dev.yml = .github\workflows\azure-dev.yml
 	EndProjectSection

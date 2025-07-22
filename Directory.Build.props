@@ -5,7 +5,7 @@
       <LangVersion>latest</LangVersion>
       <Nullable>enable</Nullable>
       <WarningsAsErrors>Nullable</WarningsAsErrors>
-      <Version>0.7.0</Version>
+      <Version>0.7.1</Version>
   </PropertyGroup>
 
     <ItemGroup>
