@@ -71,14 +71,14 @@
 
 - MediatR license
 - JWT Secret as parameter
+- Postgresql flexible azure deployment
+- azd init, provision, up
+- azd pipeline config Github Actions
+- Deployment
 
 ### Doing
 
-- Deployment
-    - Postgresql flexible azure deployment
-    - azd init, provision, up
-    - azd pipeline config Github Actions
-    - Add testing to github actions
+- Add testing to github actions
 
 ## TODO
 

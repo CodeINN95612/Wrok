@@ -1,4 +1,4 @@
-@Wrok.Identity.Api_HostAddress = https://localhost:7010
+@Wrok.Identity.Api_HostAddress = https://wrok-gateway.blueflower-e984251a.eastus2.azurecontainerapps.io/identity
 
 ### Register
 POST {{Wrok.Identity.Api_HostAddress}}/auth/register/
