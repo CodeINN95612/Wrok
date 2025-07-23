@@ -85,6 +85,12 @@
 - Block main branch for push
 - Make PR test before merge to main
 
+## 0.8
+
+### 0.8.0
+
+- Setup projects service
+
 ### Doing
 
 
@@ -93,6 +99,7 @@
 - Ids to record structs if possible lets see.
 - Email Confirmation
 - Email invitation
+- Domain Events
 - DateTime provider for testing
 - Group Endpoints
 - Pagination?

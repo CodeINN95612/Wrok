@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\src\Wrok.Gateway\Wrok.Gateway\Wrok.Gateway.csproj" />
     <ProjectReference Include="..\src\Wrok.Identity\Wrok.Identity.Api\Wrok.Identity.Api.csproj" />
+    <ProjectReference Include="..\src\Wrok.Projects\Wrok.Projects.Api\Wrok.Projects.Api.csproj" />
   </ItemGroup>
 
 </Project>

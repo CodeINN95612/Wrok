@@ -21,6 +21,7 @@ var pg = builder
             .WithPgAdmin());
 
 var identityDb = pg.AddDatabase("wrok-identity-db");
+var projectsDb = pg.AddDatabase("wrok-projects-db");
 
 var identityApi = builder
     .AddProject<Projects.Wrok_Identity_Api>("wrok-identity-api")
@@ -29,8 +30,14 @@ var identityApi = builder
     .WithEnvironment("Jwt__Secret", jwtSecret)
     .WithReference(identityDb).WaitFor(identityDb);
 
+var projectsApi = builder.AddProject<Projects.Wrok_Projects_Api>("wrok-projects-api")
+    .WithEnvironment("Jwt__Secret", jwtSecret)
+    .WithReference(projectsDb).WaitFor(projectsDb);
+
 builder.AddProject<Projects.Wrok_Gateway>("wrok-gateway")
     .WithExternalHttpEndpoints()
-    .WithReference(identityApi).WaitFor(identityApi);
+    .WithReference(identityApi).WaitFor(identityApi)
+    .WithReference(projectsApi).WaitFor(projectsApi);
+
 
 builder.Build().Run();
