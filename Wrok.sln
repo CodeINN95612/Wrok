@@ -52,6 +52,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{E605698D-0474-49CC-A115-DC123CBA2559}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\azure-dev.yml = .github\workflows\azure-dev.yml
+		.github\workflows\tests.yml = .github\workflows\tests.yml
 	EndProjectSection
 EndProject
 Global
