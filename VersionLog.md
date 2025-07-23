@@ -80,6 +80,11 @@
 - Deployment
 - Add testing to github actions
 
+### 0.7.2
+
+- Block main branch for push
+- Make PR test before merge to main
+
 ### Doing
 
 
